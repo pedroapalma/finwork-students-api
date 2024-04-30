@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: studentsapi
+  kafka:
+    consumer:
+      group-id: group-id
+    bootstrap-servers: ${KAFKA_HOST:localhost:29092}
+
+amazon:
+  dynamodb:
+    endpoint: ${DYNAMODB_ENDPOINT:http://localhost:8000}
+  aws:
+    accesskey: ${DYNAMODB_ACCESS_KEY:DUMMYIDEXAMPLE}
+    secretkey: ${DYNAMODB_SECRET_KEY:DUMMYIDEXAMPLE}
+
+kafka:
+  topic:
+    name: ${TOPIC:students_notes}
