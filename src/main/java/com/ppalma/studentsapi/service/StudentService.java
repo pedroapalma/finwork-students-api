@@ -13,4 +13,6 @@ public interface StudentService {
 
   List<Student> getAllStudents();
 
+  void saveWithAvgNotes(Student student);
+
 }

@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 @EnableKafka
 @RequiredArgsConstructor
-public class StudentKafkaConsumer {
+public class StudentsNotesConsumer {
 
   private final StudentService studentService;
 

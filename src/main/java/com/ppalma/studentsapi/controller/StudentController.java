@@ -46,4 +46,10 @@ public class StudentController {
   public List<Student> getStudents() {
     return this.studentService.getAllStudents();
   }
+
+  @PostMapping("/avg-notes")
+  @ResponseStatus(HttpStatus.OK)
+  public void saveStudentWithAvgNotes(@Valid @RequestBody Student student) {
+    this.studentService.saveWithAvgNotes(student);
+  }
 }

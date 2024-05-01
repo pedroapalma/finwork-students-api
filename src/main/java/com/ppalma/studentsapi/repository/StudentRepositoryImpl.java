@@ -6,6 +6,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.ppalma.studentsapi.entity.StudentEntity;
 import com.ppalma.studentsapi.mapper.StudentMapper;
 import com.ppalma.studentsapi.model.Student;
+import com.ppalma.studentsapi.rest.StudentNotesRestClient;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
@@ -15,8 +16,12 @@ public class StudentRepositoryImpl implements StudentRepository {
 
   private final DynamoDBMapper dynamoDBMapper;
 
-  public StudentRepositoryImpl(AmazonDynamoDB amazonDynamoDB) {
+  private final StudentNotesRestClient studentNotesRestClient;
+
+  public StudentRepositoryImpl(AmazonDynamoDB amazonDynamoDB,
+      StudentNotesRestClient studentNotesRestClient) {
     this.dynamoDBMapper = new DynamoDBMapper(amazonDynamoDB);
+    this.studentNotesRestClient = studentNotesRestClient;
   }
 
   @Override
@@ -40,5 +45,10 @@ public class StudentRepositoryImpl implements StudentRepository {
     DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
     return this.dynamoDBMapper.scan(StudentEntity.class, scanExpression).stream()
         .map(StudentMapper::toStudent).toList();
+  }
+
+  @Override
+  public void saveWithAvgNotes(Student student) {
+    this.studentNotesRestClient.sendMsgToTopicForAvgNotes(student);
   }
 }

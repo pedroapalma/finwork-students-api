@@ -16,3 +16,19 @@ amazon:
 kafka:
   topic:
     name: ${TOPIC:students_notes}
+
+rest:
+  endpoint:
+    students-notes:
+      url-base: ${STUDENT_NOTES_URL_BASE:http://localhost:8888}
+      url-prefix: /api/v1
+      send-msg-for-avg-notes: /students/messages/avg-notes
+
+springdoc:
+  swagger-ui:
+    path: /swagger-students.html
+
+
+logging:
+  level:
+    org.apache.hc.client5.http: DEBUG

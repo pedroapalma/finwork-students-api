@@ -14,4 +14,6 @@ public interface StudentRepository {
 
   List<Student> findAllStudents();
 
+  void saveWithAvgNotes(Student student);
+
 }

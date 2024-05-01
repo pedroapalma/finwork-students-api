@@ -33,4 +33,9 @@ public class StudentServiceImpl implements StudentService {
   public List<Student> getAllStudents() {
     return this.studentRepository.findAllStudents();
   }
+
+  @Override
+  public void saveWithAvgNotes(Student student) {
+    this.studentRepository.saveWithAvgNotes(student);
+  }
 }

@@ -24,7 +24,6 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 public class ControllerExceptionHandler {
 
   public static final String UNEXPECTED_ERROR = "Unexpected Error";
-  public static final String INPUT_ERROR = "INPUT_ERROR";
 
   @ExceptionHandler(value = {AmazonServiceException.class, AmazonClientException.class})
   public ResponseEntity<ErrorResponse> amazonException(RuntimeException ex) {
