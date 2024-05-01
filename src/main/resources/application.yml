@@ -3,7 +3,7 @@ spring:
     name: studentsapi
   kafka:
     consumer:
-      group-id: group-id
+      group-id: student-notes-group-id
     bootstrap-servers: ${KAFKA_HOST:localhost:29092}
 
 amazon:

@@ -7,6 +7,7 @@ import com.ppalma.studentsapi.entity.StudentEntity;
 import com.ppalma.studentsapi.mapper.StudentMapper;
 import com.ppalma.studentsapi.model.Student;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -24,8 +25,9 @@ public class StudentRepositoryImpl implements StudentRepository {
   }
 
   @Override
-  public Student findStudentById(String id) {
-    return StudentMapper.toStudent(this.dynamoDBMapper.load(StudentEntity.class, id));
+  public Optional<Student> findStudentById(String id) {
+    return Optional.ofNullable(this.dynamoDBMapper.load(StudentEntity.class, id))
+        .map(StudentMapper::toStudent);
   }
 
   @Override

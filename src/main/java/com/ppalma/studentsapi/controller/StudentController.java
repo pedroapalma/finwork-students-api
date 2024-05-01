@@ -2,6 +2,7 @@ package com.ppalma.studentsapi.controller;
 
 import com.ppalma.studentsapi.model.Student;
 import com.ppalma.studentsapi.service.StudentService;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class StudentController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.OK)
-  public void saveStudent(@RequestBody Student student) {
+  public void saveStudent(@Valid @RequestBody Student student) {
     this.studentService.save(student);
   }
 
