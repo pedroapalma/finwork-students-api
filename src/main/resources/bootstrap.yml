@@ -3,8 +3,8 @@ spring:
     application-name: studentsapi
     vault:
       application-name: studentsapi
-      host: ${HOST:localhost}
+      host: localhost
       port: 8201
       scheme: http
       authentication: TOKEN
-      token: ${VAULT_TOKEN:00000000-0000-0000-0000-000000000000}
+      token: 00000000-0000-0000-0000-000000000000
