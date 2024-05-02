@@ -2,7 +2,7 @@ package com.ppalma.studentsapi.controller.error;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
-import com.amazonaws.services.kms.model.NotFoundException;
+import com.ppalma.studentsapi.exception.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;

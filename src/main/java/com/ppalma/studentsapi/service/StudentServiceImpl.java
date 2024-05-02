@@ -1,6 +1,6 @@
 package com.ppalma.studentsapi.service;
 
-import com.amazonaws.services.kms.model.NotFoundException;
+import com.ppalma.studentsapi.exception.NotFoundException;
 import com.ppalma.studentsapi.model.Student;
 import com.ppalma.studentsapi.repository.StudentRepository;
 import java.util.List;
@@ -21,7 +21,7 @@ public class StudentServiceImpl implements StudentService {
   @Override
   public Student getStudentById(String id) {
     return this.studentRepository.findStudentById(id).orElseThrow(
-        () -> new NotFoundException(String.format("Student Not Found for id: %s", id)));
+        () -> new NotFoundException(String.format("Student Not Found, id: %s", id)));
   }
 
   @Override
