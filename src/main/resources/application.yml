@@ -28,7 +28,6 @@ springdoc:
   swagger-ui:
     path: /swagger-students.html
 
-
 logging:
   level:
     org.apache.hc.client5.http: DEBUG

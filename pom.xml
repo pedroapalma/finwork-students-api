@@ -40,6 +40,10 @@
 			<artifactId>spring-cloud-starter-vault-config</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bootstrap</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
@@ -156,9 +160,9 @@
 				<configuration>
 					<excludes>
 						<exclude>com/ppalma/studentsapi/model/**/*</exclude>
-						<exclude>com/ppalma/studentsapi/entity/**/*</exclude>
-						<exclude>com/ppalma/studentsapi/exception/**/*</exclude>
-						<exclude>com/ppalma/studentsapi/config/**/*</exclude>
+						<exclude>com.ppalma.studentsapi.infrastructure.entity/**/*</exclude>
+						<exclude>com.ppalma.studentsapi.application.exception/**/*</exclude>
+						<exclude>com.ppalma.studentsapi.shared.config/**/*</exclude>
 					</excludes>
 				</configuration>
 				<executions>
@@ -168,8 +172,8 @@
 						</goals>
 					</execution>
 					<execution>
-						<id>report</id>
-						<phase>prepare-package</phase>
+						<id>generate-code-coverage-report</id>
+						<phase>test</phase>
 						<goals>
 							<goal>report</goal>
 						</goals>
