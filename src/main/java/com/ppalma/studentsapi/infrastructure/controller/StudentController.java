@@ -25,7 +25,7 @@ public class StudentController {
   @PostMapping
   @ResponseStatus(HttpStatus.OK)
   public void saveStudent(@Valid @RequestBody Student student) {
-    this.studentUsesCases.save(student);
+    this.studentUsesCases.saveStudent(student);
   }
 
   @GetMapping("/{id}")
@@ -38,7 +38,7 @@ public class StudentController {
   @ResponseStatus(HttpStatus.OK)
   public void deleteStudent(@PathVariable String id) {
     Student student = this.studentUsesCases.getStudentById(id);
-    this.studentUsesCases.delete(student);
+    this.studentUsesCases.deleteStudent(student);
   }
 
   @GetMapping
@@ -47,9 +47,9 @@ public class StudentController {
     return this.studentUsesCases.getAllStudents();
   }
 
-  @PostMapping("/avg-notes")
+  @PostMapping("/average-notes")
   @ResponseStatus(HttpStatus.OK)
   public void saveStudentWithAvgNotes(@Valid @RequestBody Student student) {
-    this.studentUsesCases.saveWithAvgNotes(student);
+    this.studentUsesCases.saveStudentWithAvgNotes(student);
   }
 }

@@ -8,4 +8,3 @@ spring:
       scheme: http
       authentication: TOKEN
       token: ${VAULT_TOKEN:00000000-0000-0000-0000-000000000000}
-      enabled: false

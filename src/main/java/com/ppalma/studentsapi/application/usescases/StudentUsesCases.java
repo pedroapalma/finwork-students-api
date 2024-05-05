@@ -5,14 +5,14 @@ import java.util.List;
 
 public interface StudentUsesCases {
 
-  void save(Student student);
+  void saveStudent(Student student);
 
   Student getStudentById(String id);
 
-  void delete(Student Student);
+  void deleteStudent(Student Student);
 
   List<Student> getAllStudents();
 
-  void saveWithAvgNotes(Student student);
+  void saveStudentWithAvgNotes(Student student);
 
 }

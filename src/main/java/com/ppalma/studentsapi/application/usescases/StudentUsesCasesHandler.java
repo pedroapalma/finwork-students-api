@@ -17,18 +17,18 @@ public class StudentUsesCasesHandler implements StudentUsesCases {
   private final StudentProducerApi studentProducerApi;
 
   @Override
-  public void save(Student student) {
+  public void saveStudent(Student student) {
     this.studentKvs.save(student);
   }
 
   @Override
   public Student getStudentById(String id) {
     return this.studentKvs.findStudentById(id).orElseThrow(
-        () -> new NotFoundException(String.format("Student Not Found, id: %s", id)));
+        () -> new NotFoundException(String.format("Student Not Found by id: %s", id)));
   }
 
   @Override
-  public void delete(Student Student) {
+  public void deleteStudent(Student Student) {
     this.studentKvs.delete(Student);
   }
 
@@ -38,7 +38,7 @@ public class StudentUsesCasesHandler implements StudentUsesCases {
   }
 
   @Override
-  public void saveWithAvgNotes(Student student) {
+  public void saveStudentWithAvgNotes(Student student) {
     this.studentProducerApi.saveAsyncStudentWithAvgNotes(student);
   }
 }

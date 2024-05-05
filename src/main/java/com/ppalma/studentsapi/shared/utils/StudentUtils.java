@@ -4,7 +4,7 @@ import static org.apache.commons.collections4.ListUtils.emptyIfNull;
 
 import com.ppalma.studentsapi.domain.model.Student;
 
-public interface StudentNotesUtils {
+public interface StudentUtils {
 
   static Student buildStudentWithAvgNotes(Student student) {
     return Student.builder()

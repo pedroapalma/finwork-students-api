@@ -4,7 +4,7 @@ import com.ppalma.studentsapi.application.usescases.StudentUsesCases;
 import com.ppalma.studentsapi.domain.model.Student;
 import com.ppalma.studentsapi.domain.port.StudentConsumer;
 import com.ppalma.studentsapi.infrastructure.msg.StudentMsg;
-import com.ppalma.studentsapi.shared.utils.StudentNotesUtils;
+import com.ppalma.studentsapi.shared.utils.StudentUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -42,7 +42,8 @@ public class StudentKafkaConsumer implements StudentConsumer<StudentMsg> {
 
   @Override
   public void saveStudentWithAvgNotes(StudentMsg studentMsg) {
-    this.studentUsesCases.save(StudentNotesUtils.buildStudentWithAvgNotes(studentMsg.getStudent()));
+    this.studentUsesCases.saveStudent(
+        StudentUtils.buildStudentWithAvgNotes(studentMsg.getStudent()));
     studentMsg.getAck().acknowledge();
   }
 }
