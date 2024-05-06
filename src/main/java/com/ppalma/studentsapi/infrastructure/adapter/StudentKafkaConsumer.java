@@ -4,7 +4,7 @@ import com.ppalma.studentsapi.application.usescases.StudentUsesCases;
 import com.ppalma.studentsapi.domain.model.Student;
 import com.ppalma.studentsapi.domain.port.StudentConsumer;
 import com.ppalma.studentsapi.infrastructure.msg.StudentMsg;
-import com.ppalma.studentsapi.shared.utils.StudentUtils;
+import com.ppalma.studentsapi.infrastructure.utils.StudentUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.EnableKafka;

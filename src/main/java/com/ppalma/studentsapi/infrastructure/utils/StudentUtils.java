@@ -1,4 +1,4 @@
-package com.ppalma.studentsapi.shared.utils;
+package com.ppalma.studentsapi.infrastructure.utils;
 
 import static org.apache.commons.collections4.ListUtils.emptyIfNull;
 
