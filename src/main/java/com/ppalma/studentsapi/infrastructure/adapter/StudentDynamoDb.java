@@ -1,24 +1,23 @@
 package com.ppalma.studentsapi.infrastructure.adapter;
 
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.ppalma.studentsapi.application.mapper.StudentMapper;
 import com.ppalma.studentsapi.domain.model.Student;
 import com.ppalma.studentsapi.domain.port.StudentKvs;
 import com.ppalma.studentsapi.infrastructure.entity.StudentEntity;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@RequiredArgsConstructor
 public class StudentDynamoDb implements StudentKvs {
 
   private final DynamoDBMapper dynamoDBMapper;
-
-  public StudentDynamoDb(AmazonDynamoDB amazonDynamoDB) {
-    this.dynamoDBMapper = new DynamoDBMapper(amazonDynamoDB);
-  }
 
   @Override
   public void save(Student student) {
@@ -39,7 +38,10 @@ public class StudentDynamoDb implements StudentKvs {
   @Override
   public List<Student> findAllStudents() {
     DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
-    return this.dynamoDBMapper.scan(StudentEntity.class, scanExpression).stream()
-        .map(StudentMapper::toStudent).toList();
+    return Optional.ofNullable(this.dynamoDBMapper.scan(StudentEntity.class, scanExpression))
+        .map(scanResult -> scanResult.stream()
+            .map(StudentMapper::toStudent)
+            .collect(Collectors.toList()))
+        .orElse(Collections.emptyList());
   }
 }

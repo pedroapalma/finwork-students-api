@@ -92,7 +92,19 @@
 			<version>${archunit.version}</version>
 			<scope>test</scope>
 		</dependency>
-  </dependencies>
+		<!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/mockwebserver -->
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>mockwebserver</artifactId>
+			<version>4.12.0</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-client -->
+
+
+
+
+	</dependencies>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -166,10 +178,11 @@
 				<version>0.8.12</version>
 				<configuration>
 					<excludes>
-						<exclude>com/ppalma/studentsapi/model/**/*</exclude>
-						<exclude>com.ppalma.studentsapi.infrastructure.entity/**/*</exclude>
-						<exclude>com.ppalma.studentsapi.application.exception/**/*</exclude>
-						<exclude>com.ppalma.studentsapi.shared.config/**/*</exclude>
+						<exclude>com/ppalma/studentsapi/domain/model/**/*</exclude>
+						<exclude>com/ppalma/studentsapi/application/exception/**/*</exclude>
+						<exclude>com/ppalma/studentsapi/infrastructure/msg/**/*</exclude>
+						<exclude>com/ppalma/studentsapi/infrastructure/entity/**/*</exclude>
+						<exclude>com/ppalma/studentsapi/shared/config/**/*</exclude>
 					</excludes>
 				</configuration>
 				<executions>

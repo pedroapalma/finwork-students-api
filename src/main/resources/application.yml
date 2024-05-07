@@ -22,7 +22,7 @@ rest:
     students-notes:
       url-base: ${STUDENT_NOTES_URL_BASE:http://localhost:8888}
       url-prefix: /api/v1
-      send-msg-for-avg-notes: /students/messages/avg-notes
+      send-msg-for-avg-notes: /students/messages/average-notes
 
 springdoc:
   swagger-ui:
