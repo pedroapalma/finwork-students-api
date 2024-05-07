@@ -29,8 +29,6 @@ public class ControllerExceptionHandler {
   public ResponseEntity<ErrorResponse> amazonException(RuntimeException ex) {
     ErrorResponse errorMessage;
 
-    log.error(ex.getMessage(), ex);
-
     if (ex instanceof AmazonServiceException awsEx) {
       errorMessage = new ErrorResponse(awsEx.getMessage(),
           HttpStatus.valueOf(awsEx.getStatusCode()));
@@ -43,9 +41,6 @@ public class ControllerExceptionHandler {
 
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<ErrorResponse> notFoundException(NotFoundException ex) {
-
-    log.error(ex.getMessage(), ex);
-
     ErrorResponse errorMessage = new ErrorResponse(ex.getMessage(),
         HttpStatus.NOT_FOUND);
 

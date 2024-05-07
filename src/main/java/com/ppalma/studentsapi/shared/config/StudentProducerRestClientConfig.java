@@ -8,9 +8,9 @@ import org.springframework.web.client.RestClient;
 @Configuration
 public class StudentProducerRestClientConfig {
 
-  @Value("${rest.endpoint.students-notes.url-base}")
+  @Value("${rest.students-producer.url-base}")
   private String baseUrl;
-  @Value("${rest.endpoint.students-notes.url-prefix}")
+  @Value("${rest.students-producer.url-prefix}")
   private String prefixUrl;
 
   @Bean

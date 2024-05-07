@@ -13,20 +13,23 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DynamoDbConfig {
 
-  @Value("${amazon.dynamodb.endpoint}")
+  @Value("${aws.dynamodb.endpoint}")
   private String dynamoDBEndpoint;
 
-  @Value("${amazon.aws.accesskey}")
+  @Value("${aws.dynamodb.accesskey}")
   private String awsAccessKey;
 
-  @Value("${amazon.aws.secretkey}")
+  @Value("${aws.dynamodb.secretkey}")
   private String awsSecretKey;
+
+  @Value("${aws.region}")
+  private String region;
 
   @Bean
   public AmazonDynamoDB amazonDynamoDB() {
     return AmazonDynamoDBClientBuilder.standard()
         .withEndpointConfiguration(
-            new AwsClientBuilder.EndpointConfiguration(this.dynamoDBEndpoint, "us-west-2"))
+            new AwsClientBuilder.EndpointConfiguration(this.dynamoDBEndpoint, this.region))
         .withCredentials(
             new AWSStaticCredentialsProvider(new BasicAWSCredentials(this.awsAccessKey,
                 this.awsSecretKey)))

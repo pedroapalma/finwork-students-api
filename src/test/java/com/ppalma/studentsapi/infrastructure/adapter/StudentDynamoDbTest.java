@@ -59,7 +59,7 @@ class StudentDynamoDbTest {
   void deleteStudentSuccessfully() {
     Student student = StudentFaker.getStudent();
 
-    this.studentDynamoDb.delete(student);
+    this.studentDynamoDb.deleteStudentById(ID);
 
     verify(this.dynamoDBMapper).delete(any());
   }

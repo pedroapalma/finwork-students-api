@@ -7,7 +7,7 @@ import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.lang.ArchRule;
 import org.junit.jupiter.api.Test;
 
-public class MyArchitectureRules {
+public class MyArchitectureRulesTest {
 
   public static final String BASE_PACKAGE = "com.ppalma.studentsapi";
 

@@ -37,8 +37,7 @@ public class StudentController {
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
   public void deleteStudent(@PathVariable String id) {
-    Student student = this.studentUsesCases.getStudentById(id);
-    this.studentUsesCases.deleteStudent(student);
+    this.studentUsesCases.deleteStudentById(id);
   }
 
   @GetMapping

@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    active: ${ACTIVE_PROFILE:local}
   application:
     name: studentsapi
   kafka:
@@ -29,3 +27,7 @@ rest:
 springdoc:
   swagger-ui:
     path: /swagger-students.html
+
+logging:
+  level:
+    org.apache.hc.client5.http: DEBUG

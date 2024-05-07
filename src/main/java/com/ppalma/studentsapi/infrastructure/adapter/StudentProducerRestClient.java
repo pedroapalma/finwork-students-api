@@ -16,7 +16,7 @@ public class StudentProducerRestClient implements StudentProducerApi {
 
   private final RestClient restClient;
 
-  @Value("${rest.endpoint.students-notes.send-msg-for-avg-notes}")
+  @Value("${rest.students-producer.uri.send-msg-for-avg-notes}")
   private String sendMsgForAvgNotes;
 
   public StudentProducerRestClient(RestClient restClient) {

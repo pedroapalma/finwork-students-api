@@ -10,7 +10,7 @@ public interface StudentKvs {
 
   Optional<Student> findStudentById(String id);
 
-  void delete(Student Student);
+  void deleteStudentById(String id);
 
   List<Student> findAllStudents();
 

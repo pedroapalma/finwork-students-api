@@ -28,8 +28,8 @@ public class StudentUsesCasesHandler implements StudentUsesCases {
   }
 
   @Override
-  public void deleteStudent(Student Student) {
-    this.studentKvs.delete(Student);
+  public void deleteStudentById(String id) {
+    this.studentKvs.deleteStudentById(id);
   }
 
   @Override

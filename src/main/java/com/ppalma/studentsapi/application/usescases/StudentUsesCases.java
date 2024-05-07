@@ -9,7 +9,7 @@ public interface StudentUsesCases {
 
   Student getStudentById(String id);
 
-  void deleteStudent(Student Student);
+  void deleteStudentById(String id);
 
   List<Student> getAllStudents();
 

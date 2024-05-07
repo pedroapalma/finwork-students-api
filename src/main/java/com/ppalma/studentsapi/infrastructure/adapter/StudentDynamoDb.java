@@ -31,8 +31,9 @@ public class StudentDynamoDb implements StudentKvs {
   }
 
   @Override
-  public void delete(Student Student) {
-    this.dynamoDBMapper.delete(Student);
+  public void deleteStudentById(String id) {
+    StudentEntity studentEntity = this.dynamoDBMapper.load(StudentEntity.class, id);
+    this.dynamoDBMapper.delete(studentEntity);
   }
 
   @Override

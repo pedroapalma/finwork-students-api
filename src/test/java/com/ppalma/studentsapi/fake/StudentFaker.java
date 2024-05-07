@@ -23,7 +23,7 @@ public interface StudentFaker {
         .dni("123456")
         .name("Pedro")
         .notes(List.of(1D, 2D, 3D))
-        .averageNotes(6D)
+        .averageNotes(2D)
         .build();
   }
 

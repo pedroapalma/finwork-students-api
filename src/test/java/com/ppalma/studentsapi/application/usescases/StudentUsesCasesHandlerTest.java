@@ -23,7 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class StudentUsesCasesHandlerTest {
 
-  private static final String DNI = "123456";
+  private static final String ID = "123456";
 
   private StudentUsesCases studentUsesCases;
 
@@ -53,30 +53,30 @@ class StudentUsesCasesHandlerTest {
   @Test
   void returnStudentWhenFindStudentById() {
     Student excpectedStudent = StudentFaker.getStudent();
-    when(this.studentKvs.findStudentById(DNI)).thenReturn(Optional.of(excpectedStudent));
+    when(this.studentKvs.findStudentById(ID)).thenReturn(Optional.of(excpectedStudent));
 
-    Student actualStudent = this.studentUsesCases.getStudentById(DNI);
+    Student actualStudent = this.studentUsesCases.getStudentById(ID);
 
     assertThat(actualStudent).isEqualTo(excpectedStudent);
-    verify(this.studentKvs).findStudentById(DNI);
+    verify(this.studentKvs).findStudentById(ID);
   }
 
   @Test
   void returnNotFoundExceptionWhenStudentNotFoundWhileFindStudentById() {
-    when(this.studentKvs.findStudentById(DNI)).thenReturn(Optional.empty());
+    when(this.studentKvs.findStudentById(ID)).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> this.studentUsesCases.getStudentById(DNI)).isInstanceOf(
+    assertThatThrownBy(() -> this.studentUsesCases.getStudentById(ID)).isInstanceOf(
         NotFoundException.class);
-    verify(this.studentKvs).findStudentById(DNI);
+    verify(this.studentKvs).findStudentById(ID);
   }
 
   @Test
   void deleteStudentSuccessfully() {
     Student student = StudentFaker.getStudent();
 
-    this.studentUsesCases.deleteStudent(student);
+    this.studentUsesCases.deleteStudentById(ID);
 
-    verify(this.studentKvs).delete(student);
+    verify(this.studentKvs).deleteStudentById(ID);
   }
 
   @Test

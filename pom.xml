@@ -101,7 +101,11 @@
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-client -->
 
-
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>localstack</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 
 	</dependencies>
@@ -183,6 +187,7 @@
 						<exclude>com/ppalma/studentsapi/infrastructure/msg/**/*</exclude>
 						<exclude>com/ppalma/studentsapi/infrastructure/entity/**/*</exclude>
 						<exclude>com/ppalma/studentsapi/shared/config/**/*</exclude>
+						<exclude>com/ppalma/studentsapi/StudentsapiApplication.class</exclude>
 					</excludes>
 				</configuration>
 				<executions>
