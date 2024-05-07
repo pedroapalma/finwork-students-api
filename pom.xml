@@ -186,6 +186,7 @@
 						<exclude>com/ppalma/studentsapi/application/exception/**/*</exclude>
 						<exclude>com/ppalma/studentsapi/infrastructure/msg/**/*</exclude>
 						<exclude>com/ppalma/studentsapi/infrastructure/entity/**/*</exclude>
+						<exclude>com/ppalma/studentsapi/infrastructure/exception/**/*</exclude>
 						<exclude>com/ppalma/studentsapi/shared/config/**/*</exclude>
 						<exclude>com/ppalma/studentsapi/StudentsapiApplication.class</exclude>
 					</excludes>

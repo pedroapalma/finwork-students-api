@@ -3,21 +3,16 @@ package com.ppalma.studentsapi.infrastructure.controller.error;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.ppalma.studentsapi.application.exception.NotFoundException;
-import jakarta.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import com.ppalma.studentsapi.infrastructure.exception.BadRequestException;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @Slf4j
 @ControllerAdvice
@@ -58,37 +53,20 @@ public class ControllerExceptionHandler {
   }
 
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler(MethodArgumentNotValidException.class)
-  public Map<String, String> handleValidationExceptions(
-      MethodArgumentNotValidException ex) {
-    Map<String, String> errors = new HashMap<>();
-    ex.getBindingResult().getAllErrors().forEach((error) -> {
-      String fieldName = ((FieldError) error).getField();
-      String errorMessage = error.getDefaultMessage();
-      errors.put(fieldName, errorMessage);
-    });
-    return errors;
+  @ExceptionHandler(value = {BadRequestException.class})
+  public ResponseEntity<ErrorResponse> handleValidationExceptions(
+      BadRequestException ex) {
+    BindingResult bindingResul = ex.getBindingResult();
+
+    ErrorResponse errorMessage = new ErrorResponse(this.getErrorMessage(bindingResul),
+        HttpStatus.BAD_REQUEST);
+    return new ResponseEntity<>(errorMessage, errorMessage.getStatus());
   }
 
-  @ExceptionHandler(NoResourceFoundException.class)
-  public ResponseEntity<ErrorResponse> noResourceFoundException(NoResourceFoundException ex,
-      HttpServletRequest request) {
-
-    Object responseStatus = request.getAttribute(
-        "org.springframework.web.servlet.View.responseStatus");
-
-    Set<String> fields = Set.of("dni", "name", "notes");
-
-    String message = fields.stream()
-        .map(field -> {
-          Object value = request.getAttribute(field);
-          return Objects.nonNull(value) ? String.format("%s %s", field, value) : null;
-        })
-        .filter(Objects::nonNull)
+  private String getErrorMessage(BindingResult bindingResult) {
+    return bindingResult.getAllErrors().stream()
+        .map(error -> ((FieldError) error).getField() + ": " + error.getDefaultMessage())
         .collect(Collectors.joining(", "));
-
-    ErrorResponse errorMessage = new ErrorResponse(message, (HttpStatus) responseStatus);
-    return new ResponseEntity<>(errorMessage, errorMessage.getStatus());
   }
 
 }

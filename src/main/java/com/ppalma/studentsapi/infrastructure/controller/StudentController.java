@@ -2,10 +2,12 @@ package com.ppalma.studentsapi.infrastructure.controller;
 
 import com.ppalma.studentsapi.application.usescases.StudentUsesCases;
 import com.ppalma.studentsapi.domain.model.Student;
+import com.ppalma.studentsapi.infrastructure.exception.BadRequestException;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +26,10 @@ public class StudentController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.OK)
-  public void saveStudent(@Valid @RequestBody Student student) {
+  public void saveStudent(@Valid @RequestBody Student student, BindingResult result) {
+    if (result.hasErrors()) {
+      throw new BadRequestException(result);
+    }
     this.studentUsesCases.saveStudent(student);
   }
 
@@ -48,7 +53,10 @@ public class StudentController {
 
   @PostMapping("/average-notes")
   @ResponseStatus(HttpStatus.OK)
-  public void saveStudentWithAvgNotes(@Valid @RequestBody Student student) {
+  public void saveStudentWithAvgNotes(@Valid @RequestBody Student student, BindingResult result) {
+    if (result.hasErrors()) {
+      throw new BadRequestException(result);
+    }
     this.studentUsesCases.saveStudentWithAvgNotes(student);
   }
 }

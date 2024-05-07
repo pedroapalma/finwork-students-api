@@ -158,10 +158,20 @@ public class StudentControllerIntegrationTest {
   }
 
   @Test
-  public void returnBadRequestWhenSaveStudentFails() throws Exception {
+  public void returnBadRequestInSaveStudentWhenInputIsNotValid() throws Exception {
     Student student = new Student();
 
     this.mockMvc.perform(post(STUDENTS_URI)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(this.objectMapper.writeValueAsString(student)))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  public void returnBadRequestInSaveStudentWithAvgNotesWhenInputIsNotValid() throws Exception {
+    Student student = new Student();
+
+    this.mockMvc.perform(post(POST_STUDENT_WITH_AVERAGE_NOTES)
             .contentType(MediaType.APPLICATION_JSON)
             .content(this.objectMapper.writeValueAsString(student)))
         .andExpect(status().isBadRequest());
