@@ -4,12 +4,12 @@ spring:
   kafka:
     consumer:
       group-id: student-notes-group-id
-    bootstrap-servers: ${KAFKA_HOST:localhost:29092}
+    bootstrap-servers: ${KAFKA_HOST:kafka-1:19092}
 
 aws:
   region: ${REGION:us-west-2}
   dynamodb:
-    endpoint: ${DYNAMODB_ENDPOINT:http://localhost:8000}
+    endpoint: ${DYNAMODB_ENDPOINT:dynamodb-local:8000}
     accesskey: ${DYNAMODB_ACCESS_KEY:DUMMYIDEXAMPLE}
     secretkey: ${DYNAMODB_SECRET_KEY:DUMMYIDEXAMPLE}
 

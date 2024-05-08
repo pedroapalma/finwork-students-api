@@ -3,17 +3,6 @@ spring:
     active: ${ACTIVE_PROFILE:local}
   application:
     name: studentsapi
-  kafka:
-    consumer:
-      group-id: student-notes-group-id
-    bootstrap-servers: ${KAFKA_HOST:localhost:29092}
-
-aws:
-  region: ${REGION:us-west-2}
-  dynamodb:
-    endpoint: ${DYNAMODB_ENDPOINT:http://localhost:8000}
-    accesskey: ${DYNAMODB_ACCESS_KEY:DUMMYIDEXAMPLE}
-    secretkey: ${DYNAMODB_SECRET_KEY:DUMMYIDEXAMPLE}
 
 kafka:
   topic:
@@ -21,11 +10,6 @@ kafka:
 
 rest:
   students-producer:
-    url-base: ${STUDENT_NOTES_URL_BASE:http://localhost:8888}
     url-prefix: /api/v1
     uri:
       send-msg-for-avg-notes: /students/messages/average-notes
-
-springdoc:
-  swagger-ui:
-    path: /swagger-students.html

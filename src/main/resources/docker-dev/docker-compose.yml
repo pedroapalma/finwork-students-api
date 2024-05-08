@@ -1,0 +1,75 @@
+version: "2"
+services:
+  zookeeper-1:
+    image: confluentinc/cp-zookeeper:7.6.0
+    environment:
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_CLIENT_PORT: 22181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_INIT_LIMIT: 5
+      ZOOKEEPER_SYNC_LIMIT: 2
+      ZOOKEEPER_SERVERS: 192.168.1.8:22888:23888
+
+  kafka-1:
+    image: confluentinc/cp-kafka:7.6.0
+    depends_on:
+      - zookeeper-1
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper-1:22181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-1:19092,CONNECTIONS_FROM_HOST://localhost:9092,IP_HOST://192.168.1.8:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONNECTIONS_FROM_HOST:PLAINTEXT,IP_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_HEAP_OPTS: "-Xmx256M -Xms256M"
+      KAFKA_JVM_PERFORMANCE_OPTS: "-Xmx256m -Xms256m"
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    container_name: kafdrop
+    ports:
+      - "9000:9000"
+    environment:
+      JVM_OPTS: -Xms32M -Xmx64M
+      SERVER_SERVLET_CONTEXTPATH: "/"
+      KAFKA_BROKERCONNECT: 192.168.1.8:29092
+
+  vault:
+    image: vault:1.13.3
+    container_name: vault
+    ports:
+      - "8201:8201"
+    volumes:
+      - ./config.hcl:/vault/config/config.hcl
+    cap_add:
+      - IPC_LOCK
+    environment:
+      VAULT_ADDR: 'https://0.0.0.0:8201/'
+      VAULT_DEV_ROOT_TOKEN_ID: '00000000-0000-0000-0000-000000000000'
+
+  dynamodb-local:
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+    image: "amazon/dynamodb-local:latest"
+    container_name: dynamodb-local
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./docker/dynamodb:/home/dynamodblocal/data"
+    working_dir: /home/dynamodblocal
+
+  server:
+    image: pedroapalma/studentsapi:latest
+    depends_on:
+      - zookeeper-1
+      - kafka-1
+      - vault
+      - dynamodb-local
+    ports:
+      - "8080:8080"
+    environment:
+      HOST: 'vault'

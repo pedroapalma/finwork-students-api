@@ -5,7 +5,7 @@ WORKDIR /app
 COPY ./pom.xml .
 RUN mvn -e -B dependency:go-offline
 COPY ./src ./src
-RUN mvn -e -B -Dmaven.test.skip=true package
+RUN mvn -e -B -Dmaven.test.skip=true package -D"spring-boot.run.profiles"=dev
 # RUN ls -al /app/target/ && sleep 360d
 
 #### FASE FINAL DE LA IMAGEN ####
@@ -28,5 +28,6 @@ COPY --from=builder --chown=$USER:$GROUP /app/target/studentsapi*.jar app.jar
 # COPY --from=builder /app/target/api*.jar app.jar
 
 #no abre ningun puerto, es solo informativo
-EXPOSE 8080 
+EXPOSE 8080
+ENV SPRING_PROFILES_ACTIVE=dev
 ENTRYPOINT exec java -jar /workspace/app.jar
