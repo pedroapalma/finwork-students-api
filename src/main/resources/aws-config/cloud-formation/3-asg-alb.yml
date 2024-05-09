@@ -1,0 +1,129 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: This CloudFormation template creates an Auto Scaling Group with two EC2 instances in the public subnets. It includes resources such as an Application Load Balancer (ALB), a Target Group, a Listener, a Listener Rule, a Launch Configuration, and an Auto Scaling Group. The ALB routes traffic to the EC2 instances based on defined conditions. The Launch Configuration sets up the instances with necessary configurations and user data, including installing Docker and launching a Docker container. The Auto Scaling Group ensures that the desired number of instances is maintained, scaling up or down based on demand. Outputs provide information such as the Auto Scaling Group ID, the DNS name of the ALB, and the ARN of the Target Group for reference.
+
+Resources:
+  ALB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Subnets:
+        - !ImportValue subnetPrivate1Id
+        - !ImportValue subnetPrivate2Id
+      SecurityGroups:
+        - !ImportValue sgBalancerId
+      Scheme: internal
+      Tags:
+        - Key: Name
+          Value: alb-finwork
+
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      VpcId: !ImportValue vpcFinworkId
+      Protocol: HTTP
+      Port: 80
+      HealthCheckProtocol: HTTP
+      HealthCheckPort: traffic-port
+      HealthCheckPath: /actuator/health
+      HealthCheckIntervalSeconds: 10
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 2
+      TargetType: instance
+      Tags:
+        - Key: Name
+          Value: tg-finwork
+
+  ALBListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref ALB
+      Port: 80
+      Protocol: HTTP
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref TargetGroup
+
+  ALBListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - Type: forward
+          TargetGroupArn: !Ref TargetGroup
+      Conditions:
+        - Field: path-pattern
+          PathPatternConfig:
+            Values:
+              - "/api/v1/students"
+      ListenerArn: !Ref ALBListener
+      Priority: 1
+  
+  LaunchConfiguration:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      ImageId: ami-080e1f13689e07408  # Reemplaza con el AMI de Ubuntu t2.micro que desees
+      InstanceType: t2.micro
+      SecurityGroups:
+        - !ImportValue sgFinworkId  # Reemplaza con el ID del security group deseado
+      KeyName: basic  # Reemplaza con el nombre de tu keypair
+      UserData:
+        Fn::Base64: |
+          #! /bin/sh
+          apt update -y
+          apt install docker.io -y
+          usermod -a -G docker ubuntu
+          curl -L https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+          chmod +x /usr/local/bin/docker-compose
+          chown root:docker /usr/local/bin/docker-compose
+          cat << EOF > /home/ubuntu/docker-compose.yml
+          services:
+            server:
+              image: pedroapalma/kafkaproducer:latest
+              ports:
+                - "80:8888"
+          EOF
+          chown ubuntu:ubuntu /home/ubuntu/docker-compose.yml
+          /usr/local/bin/docker-compose -f /home/ubuntu/docker-compose.yml up -d
+      AssociatePublicIpAddress: true  # No asigna IP pública a las instancias
+      InstanceMonitoring: true
+
+  AutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      LaunchConfigurationName: !Ref LaunchConfiguration
+      MinSize: '2'
+      MaxSize: '2'
+      DesiredCapacity: '2'
+      VPCZoneIdentifier:
+        - !ImportValue subnetPublic1Id
+        - !ImportValue subnetPublic2Id
+      TargetGroupARNs:
+        - !Ref TargetGroup
+      Tags:
+        - Key: Name
+          Value: ec2-finwork
+          PropagateAtLaunch: true
+
+Outputs:
+  AutoScalingGroupID:
+    Description: Auto Scaling Group ID
+    Value: !Ref AutoScalingGroup
+    Export:
+      Name: autoScalingGroupId
+
+  LoadBalancerDNSName:
+    Description: DNS name of the Application Load Balancer (ALB)
+    Value: !GetAtt ALB.DNSName
+    Export:
+      Name: loadBalancerId
+
+  TargetGroupARN:
+    Description: ARN of the Target Group
+    Value: !Ref TargetGroup
+    Export:
+      Name: targetGroupId
+
+  ALBListener:
+    Description: ARN of the ALBListener
+    Value: !Ref ALBListener
+    Export:
+      Name: ablListenerId

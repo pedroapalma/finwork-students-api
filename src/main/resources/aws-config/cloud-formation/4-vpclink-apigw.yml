@@ -1,0 +1,77 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation template for creating API Gateway and VPC Link
+
+Parameters:
+  ApiGatewayName:
+    Type: String
+    Default: api-gateway-ppalma
+    Description: Name for the API Gateway
+
+Resources:
+  VpcLink:
+    Type: AWS::ApiGatewayV2::VpcLink
+    Properties:
+      Name: VpcLink
+      SubnetIds:
+        - !ImportValue subnetPrivate1Id
+        - !ImportValue subnetPrivate2Id
+      SecurityGroupIds:
+        - !ImportValue sgVpclinkId
+
+  ApiGateway:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: ppalma-finwork
+      ProtocolType: HTTP
+      CorsConfiguration:
+        AllowMethods:
+          - "*"
+        AllowOrigins:
+          - "*"
+        AllowHeaders:
+          - "*"
+      Description: API Gateway for students API
+
+  APIRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref ApiGateway
+      RouteKey: GET /api/v1/students
+      Target: !Join
+        - /
+        - - integrations
+          - !Ref APIIntegrationABL
+
+  APIIntegrationABL:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref ApiGateway
+      Description: Private ALB Integration
+      IntegrationType: HTTP_PROXY
+      IntegrationMethod: ANY
+      ConnectionType: VPC_LINK
+      ConnectionId:
+        !Ref VpcLink
+      IntegrationUri:
+        !ImportValue ablListenerId
+      PayloadFormatVersion: '1.0'
+
+  APIStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      StageName: $default
+      AutoDeploy: true
+      ApiId: !Ref ApiGateway
+
+Outputs:
+  ApiGatewayId:
+    Description: ID of the API Gateway
+    Value: !Ref ApiGateway
+    Export:
+      Name: apiGatewayId
+
+  VpcLinkId:
+    Description: ID of the VPC Link
+    Value: !Ref VpcLink
+    Export:
+      Name: vpcLinkId

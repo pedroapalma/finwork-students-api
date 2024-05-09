@@ -1,0 +1,91 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation template for creating security groups
+Parameters: {}
+Resources:
+  SecurityGroupFinwork:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for finwork
+      VpcId: !ImportValue vpcFinworkId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          SourceSecurityGroupId: !GetAtt SecurityGroupBalancer.GroupId
+      SecurityGroupEgress:
+        - IpProtocol: '-1'
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: sg-finwork
+  SecurityGroupDynamodb:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for dynamodb
+      VpcId: !ImportValue vpcFinworkId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          SourceSecurityGroupId: !GetAtt SecurityGroupFinwork.GroupId
+      SecurityGroupEgress:
+        - IpProtocol: '-1'
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: sg-dynamodb
+  SecurityGroupBalancer:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for balancer
+      VpcId: !ImportValue vpcFinworkId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: '-1'
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: sg-balancer
+  SecurityGroupVpclink:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for vpclink
+      VpcId: !ImportValue vpcFinworkId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          DestinationSecurityGroupId: !GetAtt SecurityGroupBalancer.GroupId
+      Tags:
+        - Key: Name
+          Value: sg-vpclink
+Outputs:
+  SecurityGroupFinworkId:
+    Description: ID of the security group finwork
+    Value: !Ref SecurityGroupFinwork
+    Export:
+      Name: sgFinworkId
+  SecurityGroupDynamodbId:
+    Description: ID of the security group dynamodb
+    Value: !Ref SecurityGroupDynamodb
+    Export:
+      Name: sgDynamodbId
+  SecurityGroupBalancerId:
+    Description: ID of the security group balancer
+    Value: !Ref SecurityGroupBalancer
+    Export:
+      Name: sgBalancerId
+  SecurityGroupVpclinkId:
+    Description: ID of the security group vpclink
+    Value: !Ref SecurityGroupVpclink
+    Export:
+      Name: sgVpclinkId

@@ -1,0 +1,147 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: This CloudFormation template sets up a VPC named "vpc-finwork" for the project. It establishes basic networking components, such as an internet gateway and route tables, along with public and private subnets across different availability zones. Outputs provide essential identifiers for the VPC and its subnets.
+Metadata: {}
+Parameters: {}
+Mappings: {}
+Conditions: {}
+Resources:
+  VpcFinwork:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: 'true'
+      EnableDnsHostnames: 'true'
+      InstanceTenancy: default
+      Tags:
+        - Key: "Name"
+          Value: "vpc-finwork"
+  IG:
+    Type: AWS::EC2::InternetGateway
+    Properties: {}
+  attachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VpcFinwork
+      InternetGatewayId: !Ref IG
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VpcFinwork
+      CidrBlock: 10.0.30.0/24
+      AvailabilityZone: us-east-1a
+      MapPublicIpOnLaunch: true
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VpcFinwork
+      CidrBlock: 10.0.40.0/24
+      AvailabilityZone: us-east-1b
+      MapPublicIpOnLaunch: true
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VpcFinwork
+      CidrBlock: 10.0.3.0/24
+      AvailabilityZone: us-east-1a
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VpcFinwork
+      CidrBlock: 10.0.4.0/24
+      AvailabilityZone: us-east-1b
+  ElasticIP0:
+    Type: "AWS::EC2::EIP"
+    Properties:
+      Domain: "vpc"
+  NATGateway0:
+    Type: "AWS::EC2::NatGateway"
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+          - "ElasticIP0"
+          - "AllocationId"
+      SubnetId:
+        Ref: "PublicSubnet1"
+  RouteTablePublic:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VpcFinwork
+      Tags:
+        - Key: "Name"
+          Value: !Join
+            - ''
+            - - !Ref "VpcFinwork"
+              - '-pub-rtb'
+  RouteTablePrivate:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VpcFinwork
+      Tags:
+        - Key: "Name"
+          Value: !Join
+            - ''
+            - - !Ref "VpcFinwork"
+              - '-priv-rtb'
+  SbRTPublic1:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet1
+      RouteTableId: !Ref RouteTablePublic
+  SbRTPublic2:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet2
+      RouteTableId: !Ref RouteTablePublic
+  SbRTPrivate1:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet1
+      RouteTableId: !Ref RouteTablePrivate
+  SbRTPrivate2:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet2
+      RouteTableId: !Ref RouteTablePrivate
+  RouteInPubRTB:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref RouteTablePublic
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref IG
+  RouteInPrivRTB:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref RouteTablePrivate
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NATGateway0
+Outputs:
+  idVPC:
+    Description: Id VPC
+    Value: !Ref VpcFinwork
+    Export:
+      Name: vpcFinworkId
+  cidrBlockVPC:
+    Description: CIDR block IP VPC
+    Value: !GetAtt VpcFinwork.CidrBlock
+    Export:
+      Name: cidrBlockVPCId
+  SubnetPrivate1:
+    Description: SubRed Private 1
+    Value: !Ref PrivateSubnet1
+    Export:
+      Name: subnetPrivate1Id
+  SubnetPrivate2:
+    Description: SubRed Private 2
+    Value: !Ref PrivateSubnet2
+    Export:
+      Name: subnetPrivate2Id
+  SubnetPublic1:
+    Description: SubRed Public 1
+    Value: !Ref PublicSubnet1
+    Export:
+      Name: subnetPublic1Id
+  SubnetPublic2:
+    Description: SubRed Public 2
+    Value: !Ref PublicSubnet2
+    Export:
+      Name: subnetPublic2Id
