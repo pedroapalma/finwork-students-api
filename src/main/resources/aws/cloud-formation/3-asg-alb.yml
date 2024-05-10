@@ -74,15 +74,6 @@ Resources:
           curl -L https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
           chmod +x /usr/local/bin/docker-compose
           chown root:docker /usr/local/bin/docker-compose
-          cat << EOF > /home/ubuntu/docker-compose.yml
-          services:
-            server:
-              image: pedroapalma/kafkaproducer:latest
-              ports:
-                - "80:8888"
-          EOF
-          chown ubuntu:ubuntu /home/ubuntu/docker-compose.yml
-          /usr/local/bin/docker-compose -f /home/ubuntu/docker-compose.yml up -d
       AssociatePublicIpAddress: true  # No asigna IP pública a las instancias
       InstanceMonitoring: true
 

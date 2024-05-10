@@ -51,3 +51,14 @@ services:
     environment:
       VAULT_HOST: '10.0.30.106'
       VAULT_TOKEN: '00000000-0000-0000-0000-000000000000'
+
+  kafkaproducer:
+    image: pedroapalma/kafkaproducer:latest
+    depends_on:
+      - zookeeper
+      - kafka
+    ports:
+      - "8888:8888"
+    environment:
+      VAULT_HOST: '10.0.30.106'
+      VAULT_TOKEN: '00000000-0000-0000-0000-000000000000'
