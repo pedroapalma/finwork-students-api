@@ -33,7 +33,7 @@ In addition to the CRUD operations, the API includes a method to calculate the a
 
 ### Local
 
-- Deploy the following containers using Docker [docker-compose.yml](src/main/resources/docker-local/docker-compose.yml) (**NOTE:** Replace the IP address `192.168.1.8` with your local one)
+- Deploy the following containers using Docker [docker-compose.yml](src/main/resources/local/docker-compose.yml) (**NOTE:** Replace the IP address `192.168.1.8` with your local one)
 - Clone the repository.
 - Build the project using Maven: `mvn clean package`
 - Run the application: `java -jar target/studentsapi-0.0.1-SNAPSHOT.jar`

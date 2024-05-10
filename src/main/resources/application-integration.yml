@@ -7,7 +7,7 @@ spring:
     bootstrap-servers: ${KAFKA_HOST:localhost:29092}
 
 aws:
-  region: ${REGION:us-west-2}
+  region: ${REGION:DUMMYREGION}
   dynamodb:
     endpoint: ${DYNAMODB_ENDPOINT:http://localhost:8000}
     accesskey: ${DYNAMODB_ACCESS_KEY:DUMMYIDEXAMPLE}
@@ -15,4 +15,4 @@ aws:
 
 rest:
   students-producer:
-    url-base: ${STUDENT_NOTES_URL_BASE:http://localhost:8888}
+    url-base: ${STUDENTS_PRODUCER_URL_BASE:http://localhost:8888}

@@ -53,7 +53,7 @@ Resources:
       ConnectionId:
         !Ref VpcLink
       IntegrationUri:
-        !ImportValue ablListenerId
+        !ImportValue albListenerId
       PayloadFormatVersion: '1.0'
 
   APIStage:

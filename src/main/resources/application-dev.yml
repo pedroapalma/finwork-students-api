@@ -4,18 +4,18 @@ spring:
   kafka:
     consumer:
       group-id: student-notes-group-id
-    bootstrap-servers: ${KAFKA_HOST:kafka-1:19092}
+    bootstrap-servers: ${KAFKA_HOST}
 
 aws:
-  region: ${REGION:us-west-2}
+  region: ${REGION}
   dynamodb:
-    endpoint: ${DYNAMODB_ENDPOINT:dynamodb-local:8000}
-    accesskey: ${DYNAMODB_ACCESS_KEY:DUMMYIDEXAMPLE}
-    secretkey: ${DYNAMODB_SECRET_KEY:DUMMYIDEXAMPLE}
+    endpoint: ${DYNAMODB_ENDPOINT}
+    accesskey: ${DYNAMODB_ACCESS_KEY}
+    secretkey: ${DYNAMODB_SECRET_KEY}
 
 rest:
   students-producer:
-    url-base: ${STUDENT_NOTES_URL_BASE:http://localhost:8888}
+    url-base: ${STUDENTS_PRODUCER_URL_BASE}
 
 springdoc:
   swagger-ui:

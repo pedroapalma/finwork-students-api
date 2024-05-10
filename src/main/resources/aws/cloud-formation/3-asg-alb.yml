@@ -126,4 +126,4 @@ Outputs:
     Description: ARN of the ALBListener
     Value: !Ref ALBListener
     Export:
-      Name: ablListenerId
+      Name: albListenerId

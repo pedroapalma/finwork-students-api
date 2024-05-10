@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation template for creating DynamoDB table for students
+
+Resources:
+  DynamoDBStudentTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: student
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+Outputs:
+  DynamoDBTableName:
+    Description: Name of the DynamoDB table for students
+    Value: !Ref DynamoDBStudentTable
+    Export:
+      Name: studentTableId

@@ -1,0 +1,14 @@
+version: "2"
+services:
+  vault:
+    image: vault:1.13.3
+    container_name: vault
+    ports:
+      - "8201:8201"
+    volumes:
+      - ./config.hcl:/vault/config/config.hcl
+    cap_add:
+      - IPC_LOCK
+    environment:
+      VAULT_ADDR: 'https://0.0.0.0:8201/'
+      VAULT_DEV_ROOT_TOKEN_ID: '00000000-0000-0000-0000-000000000000'
