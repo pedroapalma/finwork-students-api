@@ -80,7 +80,7 @@ notes*	      [number($double)]
 averageNotes  number($double)
 }
 ````
-## docs
+## Documentation
 
 http://localhost:8080/swagger-ui/index.html
 
