@@ -50,7 +50,10 @@ jobs:
       run: |
         echo "coverage = ${{ steps.jacoco.outputs.coverage }}"   
 
+    - uses: actions/checkout@v4
     - name: Commit the badge (if it changed)
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
       run: |
         if [[ `git status --porcelain` ]]; then
           git config --global user.name ${{ secrets.NAME }}
