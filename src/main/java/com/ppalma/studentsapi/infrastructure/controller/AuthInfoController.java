@@ -11,15 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/authentication/scopes")
-class UserInfoController {
+@RequestMapping("/api/v1/auth/details")
+class AuthInfoController {
 
   @GetMapping
-  Map<String, Object> currentUserDetails() {
-    return this.getLoginUserDetails();
-  }
-
-  Map<String, Object> getLoginUserDetails() {
+  Map<String, Object> getAuthDetails() {
     Map<String, Object> map = new HashMap<>();
     JwtAuthenticationToken authentication =
         (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();

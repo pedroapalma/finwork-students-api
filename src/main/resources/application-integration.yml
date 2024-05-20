@@ -5,6 +5,11 @@ spring:
     consumer:
       group-id: student-notes-group-id
     bootstrap-servers: ${KAFKA_HOST:localhost:29092}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${JWT_ISSUER_URI:http://localhost:8001/realms/studentsapi-realm}
 
 aws:
   region: ${REGION:DUMMYREGION}
