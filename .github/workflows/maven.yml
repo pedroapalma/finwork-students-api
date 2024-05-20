@@ -30,8 +30,8 @@ jobs:
         java-version: '17'
         distribution: 'adopt'
         cache: maven
-        ref: ${{ github.event.pull_request.head.ref }}
-    - name: Build with Maven
+        ref: ${{ github.head_ref }}
+        fetch-depth: 0
       run: mvn -B package --file pom.xml
 
     - name: Run PMD
