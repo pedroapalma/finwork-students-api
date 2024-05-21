@@ -27,6 +27,10 @@ public class SecurityConfig {
             .hasAuthority("SCOPE_students/basic")
             .requestMatchers(HttpMethod.POST, "/api/v1/students/average-notes")
             .hasAuthority("SCOPE_students/average-notes")
+            .requestMatchers(HttpMethod.GET, "/actuator/health/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/swagger-students.html").permitAll()
+            .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll()
             .anyRequest().authenticated()
         )
         .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()));

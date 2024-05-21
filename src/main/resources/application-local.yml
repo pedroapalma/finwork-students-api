@@ -26,6 +26,10 @@ springdoc:
   swagger-ui:
     path: /swagger-students.html
 
+openapi:
+  oAuthFlow:
+    tokenUrl: ${TOKEN_URL:http://localhost:8001/realms/studentsapi-realm/protocol/openid-connect/token}
+
 logging:
   level:
     org.apache.hc.client5.http: DEBUG
