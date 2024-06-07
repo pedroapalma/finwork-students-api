@@ -4,7 +4,12 @@ spring:
   kafka:
     consumer:
       group-id: student-notes-group-id
-    bootstrap-servers: ${KAFKA_HOST:localhost:29092}
+    bootstrap-servers: ${KAFKA_HOST:localhost:9092}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${JWT_ISSUER_URI:http://localhost:8001/realms/studentsapi-realm}
 
 aws:
   region: ${REGION:DUMMYREGION}
@@ -20,6 +25,10 @@ rest:
 springdoc:
   swagger-ui:
     path: /swagger-students.html
+
+openapi:
+  oAuthFlow:
+    tokenUrl: ${TOKEN_URL:http://localhost:8001/realms/studentsapi-realm/protocol/openid-connect/token}
 
 logging:
   level:

@@ -32,11 +32,51 @@ Resources:
           - "*"
       Description: API Gateway for students API
 
-  APIRoute:
+  APIRouteGetStudents:
     Type: AWS::ApiGatewayV2::Route
     Properties:
       ApiId: !Ref ApiGateway
       RouteKey: GET /api/v1/students
+      Target: !Join
+        - /
+        - - integrations
+          - !Ref APIIntegrationABL
+
+  APIRouteGetStudentById:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref ApiGateway
+      RouteKey: GET /api/v1/students/{id}
+      Target: !Join
+        - /
+        - - integrations
+          - !Ref APIIntegrationABL
+
+  APIRoutePostStudent:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref ApiGateway
+      RouteKey: POST /api/v1/students
+      Target: !Join
+        - /
+        - - integrations
+          - !Ref APIIntegrationABL
+
+  APIRouteDeleteStudentById:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref ApiGateway
+      RouteKey: DELETE /api/v1/students/{id}
+      Target: !Join
+        - /
+        - - integrations
+          - !Ref APIIntegrationABL
+
+  APIRoutePostStudentWithAvgNotes:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref ApiGateway
+      RouteKey: POST /api/v1/students/average-notes
       Target: !Join
         - /
         - - integrations

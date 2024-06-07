@@ -42,7 +42,7 @@ services:
       KAFKA_BROKERCONNECT: kafka:19092
 
   studentsapi:
-    image: pedroapalma/studentsapi:latest
+    image: pedroapalma/studentsapi_oauth:latest
     depends_on:
       - zookeeper
       - kafka
