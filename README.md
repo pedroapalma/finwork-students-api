@@ -91,9 +91,15 @@ http://localhost:8080/swagger-ui/index.html
 #### Curl
 
 ```bash
-curl --location 'http://localhost:8080/api/v1/students/1' \
---header 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI3eHY1ME5OTlVyMEhCNmRXWWg5dWxvSjRJMi1pX3hBUlNqQkFrVmszMkJFIn0.eyJleHAiOjE3MTYyNTU2NzgsImlhdCI6MTcxNjI1NTM3OCwianRpIjoiZTA2NTY5M2EtYzJkYy00MTg3LThjZWQtOWQ4ZDAwNzI1MjgzIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDAxL3JlYWxtcy9zdHVkZW50c2FwaS1yZWFsbSIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJiMDA4MDYxYS05YjI5LTQ0OGEtYjU2Ni1lY2NmNzFjNzQzYWIiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhcGlzdHVkZW50cy1jbGllbnQiLCJzZXNzaW9uX3N0YXRlIjoiNzQ1NDdjODUtNWEyYy00MjQ0LTk1MTUtNmJjMjBhYWVhYmIzIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwOi8vbG9jYWxob3N0OjgwMDEiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImFkbWluX3JvbGUiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIiwiZGVmYXVsdC1yb2xlcy1zdHVkZW50c2FwaS1yZWFsbSJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoic3R1ZGVudHMvYXZlcmFnZS1ub3RlcyBzdHVkZW50cy9iYXNpYyBwcm9maWxlIGVtYWlsIiwic2lkIjoiNzQ1NDdjODUtNWEyYy00MjQ0LTk1MTUtNmJjMjBhYWVhYmIzIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJhZG1pbiBhZG1pbiIsInByZWZlcnJlZF91c2VybmFtZSI6ImFkbWluIiwiZ2l2ZW5fbmFtZSI6ImFkbWluIiwiZmFtaWx5X25hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIn0.FwqHg5lXgDF-kjJhS1XLinf229MWpJxR_8XSFwu2dDU1xeGyqTrO1NKyhoOeH4hKuKrnY0t4cjwYLG1T4CHfY9VHaDW-Ok3Dpsv4ybr9WLwOXA9Hgy7fTi-zwma4Y1l6QPQUmXqUVK3g-fDL0rFFos-N3uOWUvdUwJhTXhXd_pCTGUHk8xxhesciDyovvSYvGb2HDBa71sQ4nKFDpIl2VIg7XvpdQOaiyMU6GMNGj6fCw1NxiHNoRIPoRATEURRS5wNOAybtj_gZs6W--qO7DmIgN1g9LIvViywKOx-z6U42tuFBucbvE3vLyRRCV3itbL4D4EpvX56OVGuVBOZeyg' \
---header 'Cookie: JSESSIONID=B147DB395D50F6FCF45DCFE87C99D725'
+curl --location 'http://localhost:8001/realms/studentsapi-realm/protocol/openid-connect/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--header 'Cookie: JSESSIONID=B147DB395D50F6FCF45DCFE87C99D725' \
+--data-urlencode 'grant_type=password' \
+--data-urlencode 'client_id=apistudents-client' \
+--data-urlencode 'client_secret=CckzSbOLBhbuhL4jcjSe5j99xZFVDnmD' \
+--data-urlencode 'username=admin' \
+--data-urlencode 'password=admin' \
+--data-urlencode 'scope=students/basic students/average-notes profile email'
 ```
 
 #### Response
@@ -163,3 +169,13 @@ curl --location 'http://localhost:8080/api/v1/students/1' \
   "averageNotes": 2.0
 }
 ````
+
+### OAuth2 getting Issuer and Token endpoints
+
+- Keycloak: `http://localhost:8001/realms/studentsapi-realm/.well-known/openid-configuration`
+- Cognito: `https://cognito-idp.'Region'.amazonaws.com/'your user pool ID'/.well-known/openid-configuration`
+
+### Links
+
+- https://docs.aws.amazon.com/cognito/latest/developerguide/federation-endpoints.html
+- https://www.baeldung.com/spring-boot-keycloak

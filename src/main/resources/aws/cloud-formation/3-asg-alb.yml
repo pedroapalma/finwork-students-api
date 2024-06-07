@@ -61,7 +61,7 @@ Resources:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
       ImageId: ami-080e1f13689e07408  # Reemplaza con el AMI de Ubuntu t2.micro que desees
-      InstanceType: t2.micro
+      InstanceType: t2.medium
       SecurityGroups:
         - !ImportValue sgFinworkId  # Reemplaza con el ID del security group deseado
       KeyName: basic  # Reemplaza con el nombre de tu keypair
@@ -74,7 +74,7 @@ Resources:
           curl -L https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
           chmod +x /usr/local/bin/docker-compose
           chown root:docker /usr/local/bin/docker-compose
-      AssociatePublicIpAddress: true  # No asigna IP pública a las instancias
+      AssociatePublicIpAddress: true  # Asigna IP pública a las instancias
       InstanceMonitoring: true
 
   AutoScalingGroup:
